@@ -1,0 +1,15 @@
+{
+    "bootsuffix": "_boot",
+    "buildprefix": "build_",
+    "change": "First release",
+    "description": "This BSP can be used to run Stratify OS on the STM32F Nucleo-F746ZG board.",
+    "github": "https://github.com/StratifyLabs/Nucleo-F746ZG",
+    "hardwareid": "0x00000013",
+    "name": "Nucleo-F746ZG",
+    "permissions": "public",
+    "publisher": "Stratify Labs, Inc",
+    "tags": "stm32,arm,cortex-m7",
+    "type": "StratifyKernel",
+    "uid": "QSW7bQHeDqhJEcZ0mxQ5SmEYUSL2",
+    "version": "0.4"
+}
