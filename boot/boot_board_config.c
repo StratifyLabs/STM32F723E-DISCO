@@ -30,7 +30,7 @@ const struct __sFILE_fake __sf_fake_stdin;
 const struct __sFILE_fake __sf_fake_stdout;
 const struct __sFILE_fake __sf_fake_stderr;
 
-#define SOS_SYSTEM_CLOCK 168000000
+#define SOS_SYSTEM_CLOCK 120000000
 
 #define USB_RX_BUFFER_SIZE 512
 char usb_rx_buffer[USB_RX_BUFFER_SIZE] MCU_SYS_MEM;
