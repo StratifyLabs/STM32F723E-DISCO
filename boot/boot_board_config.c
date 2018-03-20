@@ -30,7 +30,7 @@ const struct __sFILE_fake __sf_fake_stdin;
 const struct __sFILE_fake __sf_fake_stdout;
 const struct __sFILE_fake __sf_fake_stderr;
 
-#define SOS_SYSTEM_CLOCK 120000000
+#define SOS_SYSTEM_CLOCK 216000000
 
 #define USB_RX_BUFFER_SIZE 512
 char usb_rx_buffer[USB_RX_BUFFER_SIZE] MCU_SYS_MEM;
@@ -54,7 +54,7 @@ const mcu_board_config_t mcu_board_config = {
         .width = 8
     },
     .o_flags = MCU_BOARD_CONFIG_FLAG_LED_ACTIVE_HIGH,
-    .led = {1, 1}, //PB1
+    .led = {0, 5}, //PB1
     .event_handler = 0,
     .usb_rx_buffer = usb_rx_buffer,
     .usb_rx_buffer_size = USB_RX_BUFFER_SIZE
