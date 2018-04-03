@@ -26,11 +26,11 @@ limitations under the License.
 //openocd -f interface/stlink-v2-1.cfg -f target/stm32f4x_stlink.cfg
 
 
-#define SOS_BOARD_SYSTEM_CLOCK 168000000
+#define SOS_BOARD_SYSTEM_CLOCK 216000000
 #define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
 #define SOS_BOARD_ID "--"
-#define SOS_BOARD_VERSION "0.0"
-#define SOS_BOARD_NAME "BOARD_NAME"
+#define SOS_BOARD_VERSION "0.5"
+#define SOS_BOARD_NAME "STM32F723E-DISCO"
 
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512
 #define SOS_BOARD_STDIO_BUFFER_SIZE 512
@@ -42,17 +42,16 @@ limitations under the License.
 #define SOS_BOARD_TRACE_EVENT board_trace_event
 
 #define STM32_ARCH_O_FLAGS STM32_CONFIG_FLAG_IS_HSE_ON
-#define STM32_ARCH_CLOCK_PLLM 4
-#define STM32_ARCH_CLOCK_PLLN 168
+#define STM32_ARCH_CLOCK_PLLM 25
+#define STM32_ARCH_CLOCK_PLLN 432
 #define STM32_ARCH_CLOCK_PLLP 2
-#define STM32_ARCH_CLOCK_PLLQ 7
+#define STM32_ARCH_CLOCK_PLLQ 9
 #define STM32_ARCH_CLOCK_PLLR 0
 #define STM32_ARCH_CLOCK_AHB_CLOCK_DIVIDER 1
-#define STM32_ARCH_CLOCK_APB1_CLOCK_DIVIDER 2
-#define STM32_ARCH_CLOCK_APB2_CLOCK_DIVIDER 1
-#define STM32_ARCH_CLOCK_48_CLOCK_SELECTION 0
+#define STM32_ARCH_CLOCK_APB1_CLOCK_DIVIDER 4
+#define STM32_ARCH_CLOCK_APB2_CLOCK_DIVIDER 2
 #define STM32_ARCH_CLOCK_VOLTAGE_SCALE 1
-#define STM32_ARCH_CLOCK_FLASH_LATENCY 5
+#define STM32_ARCH_CLOCK_FLASH_LATENCY 7
 
 //--------------------------------------------Disco Definitions-------------------------------------------------
 
@@ -61,8 +60,10 @@ limitations under the License.
 #define DISCO_DEBUG_UART_RX_PIN 9
 #define DISCO_DEBUG_UART_TX_PORT 3
 #define DISCO_DEBUG_UART_TX_PIN 8
-#define DISCO_LED_PORT 1
-#define DISCO_LED_PIN 7
+#define DISCO_LED_PORT 0
+#define DISCO_LED_PIN 5
+#define DISCO_BOOT_HARDWARE_REQUEST_PORT 0
+#define DISCO_BOOT_HARDWARE_REQUEST_PIN 0
 
 //--------------------------------------------Symbols-------------------------------------------------
 
