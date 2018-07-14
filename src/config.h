@@ -28,8 +28,8 @@ limitations under the License.
 
 #define SOS_BOARD_SYSTEM_CLOCK 216000000
 #define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
-#define SOS_BOARD_ID "--"
-#define SOS_BOARD_VERSION "0.5"
+#define SOS_BOARD_ID "-LABUlXF_3U2nEosAKsD"
+#define SOS_BOARD_VERSION "0.2"
 #define SOS_BOARD_NAME "STM32F723E-DISCO"
 
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512
@@ -53,13 +53,23 @@ limitations under the License.
 #define STM32_ARCH_CLOCK_VOLTAGE_SCALE 1
 #define STM32_ARCH_CLOCK_FLASH_LATENCY 7
 
+//Testing with high speed USB
+#if 1
+#define SOS_BOARD_USB_PORT 1
+#define SOS_BOARD_USB_DM_PIN mcu_pin(1,14)
+#define SOS_BOARD_USB_DP_PIN mcu_pin(1,15)
+#define SOS_BOARD_RX_FIFO_WORDS 0x200
+#define SOS_BOARD_TX0_FIFO_WORDS 0x80
+#define SOS_BOARD_TX1_FIFO_WORDS 0x80
+#endif
+
 //--------------------------------------------Disco Definitions-------------------------------------------------
 
-#define DISCO_DEBUG_UART_PORT 2
-#define DISCO_DEBUG_UART_RX_PORT 3
-#define DISCO_DEBUG_UART_RX_PIN 9
-#define DISCO_DEBUG_UART_TX_PORT 3
-#define DISCO_DEBUG_UART_TX_PIN 8
+#define DISCO_DEBUG_UART_PORT 5
+#define DISCO_DEBUG_UART_RX_PORT 2
+#define DISCO_DEBUG_UART_RX_PIN 7
+#define DISCO_DEBUG_UART_TX_PORT 2
+#define DISCO_DEBUG_UART_TX_PIN 6
 #define DISCO_LED_PORT 0
 #define DISCO_LED_PIN 5
 #define DISCO_BOOT_HARDWARE_REQUEST_PORT 0
@@ -102,6 +112,19 @@ limitations under the License.
 #define SYMBOLS_IGNORE_SEM 1
 #define SYMBOLS_IGNORE_MQ 1
 #endif
+
+/* Uncomment to add ARM CMSIS DSP libraries to the BSP
+ * 
+ * See [ARM CMSIS Declaration](https://github.com/StratifyLabs/StratifyOS-CMSIS/blob/master/arm_dsp_api_declaration.h)
+ * for more detailed link configuration switches.
+ * 
+ * 
+ */
+//#define SOS_BOARD_ARM_DSP_API_Q7 1
+//#define SOS_BOARD_ARM_DSP_API_Q15 1
+//#define SOS_BOARD_ARM_DSP_API_Q31 1
+//#define SOS_BOARD_ARM_DSP_API_F32 1
+//#define SOS_BOARD_ARM_DSP_CONVERSION_API 1
 
 
 

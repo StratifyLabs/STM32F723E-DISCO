@@ -1,15 +1,25 @@
 {
     "bootsuffix": "_boot",
     "buildprefix": "build_",
-    "change": "First release",
-    "description": "This BSP can be used to run Stratify OS on the STM32F Nucleo-F746ZG board.",
-    "github": "https://github.com/StratifyLabs/Nucleo-F746ZG",
+    "change": "Added ID to kernel",
+    "changes": {
+        "-LABUlNaBVbk0YUcU4GQ": {
+            "description": "First release",
+            "version": "0.1"
+        },
+        "-LABVApxgNqgYjTlImiu": {
+            "description": "Added ID to kernel",
+            "version": "0.2"
+        }
+    },
+    "description": "This BSP can be used to run Stratify OS on the STM32F723E-DISCO board.",
+    "github": "https://github.com/StratifyLabs/STM32F723E-DISCO",
     "hardwareid": "0x00000013",
     "name": "STM32F723E-DISCO",
-    "permissions": "public",
+    "permissions": "searchable",
     "publisher": "Stratify Labs, Inc",
     "tags": "stm32,arm,cortex-m7",
     "type": "StratifyKernel",
     "uid": "QSW7bQHeDqhJEcZ0mxQ5SmEYUSL2",
-    "version": "0.5"
+    "version": "0.2"
 }

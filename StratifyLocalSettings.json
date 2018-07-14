@@ -1,9 +1,9 @@
 {
-    "LocalBuild": "build_release",
+    "LocalBuild": "build_debug",
     "LocalIsFormatHome": false,
     "LocalIsInstallAssets": false,
     "LocalIsInstallData": false,
     "LocalIsRunTests": false,
     "LocalIsVerify": false,
-    "LocalProjectId": ""
+    "LocalProjectId": "-LABUlXF_3U2nEosAKsD"
 }
