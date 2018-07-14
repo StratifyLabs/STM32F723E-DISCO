@@ -61,6 +61,7 @@ limitations under the License.
 #define SOS_BOARD_RX_FIFO_WORDS 0x200
 #define SOS_BOARD_TX0_FIFO_WORDS 0x80
 #define SOS_BOARD_TX1_FIFO_WORDS 0x80
+#define SOS_BOARD_USB_ATTR_FLAGS (USB_FLAG_SET_DEVICE | USB_FLAG_IS_HIGH_SPEED)
 #endif
 
 //--------------------------------------------Disco Definitions-------------------------------------------------
