@@ -21,8 +21,8 @@ limitations under the License.
 #include <unistd.h>
 #include <mcu/debug.h>
 #include <sos/dev/pio.h>
-#include "config.h"
 #include "link_config.h"
+#include "config.h"
 
 #if !defined SOS_BOARD_RX_FIFO_WORDS
 #define SOS_BOARD_RX_FIFO_WORDS 128
@@ -96,7 +96,11 @@ link_transport_phy_t link_transport_open(const char * name, int baudrate){
 
 	//set up the USB attributes
 	memset(&(usb_attr.pin_assignment), 0xff, sizeof(usb_pin_assignment_t));
-    usb_attr.o_flags = USB_FLAG_SET_DEVICE | USB_FLAG_IS_HIGH_SPEED;
+#if defined SOS_BOARD_USB_ATTR_FLAGS
+    usb_attr.o_flags = SOS_BOARD_USB_ATTR_FLAGS;
+#else
+    usb_attr.o_flags = USB_FLAG_SET_DEVICE;
+#endif
 	usb_attr.pin_assignment.dp = SOS_BOARD_USB_DP_PIN;
 	usb_attr.pin_assignment.dm = SOS_BOARD_USB_DM_PIN;
 	usb_attr.freq = mcu_board_config.core_osc_freq;

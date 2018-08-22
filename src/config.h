@@ -29,7 +29,7 @@ limitations under the License.
 #define SOS_BOARD_SYSTEM_CLOCK 216000000
 #define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
 #define SOS_BOARD_ID "-LABUlXF_3U2nEosAKsD"
-#define SOS_BOARD_VERSION "0.2"
+#define SOS_BOARD_VERSION "0.11"
 #define SOS_BOARD_NAME "STM32F723E-DISCO"
 
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512
@@ -54,7 +54,7 @@ limitations under the License.
 #define STM32_ARCH_CLOCK_FLASH_LATENCY 7
 
 //Testing with high speed USB
-#if 1
+#if 0
 #define SOS_BOARD_USB_PORT 1
 #define SOS_BOARD_USB_DM_PIN mcu_pin(1,14)
 #define SOS_BOARD_USB_DP_PIN mcu_pin(1,15)

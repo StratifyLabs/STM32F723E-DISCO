@@ -20,7 +20,6 @@ limitations under the License.
 #include <unistd.h>
 #include <mcu/pio.h>
 #include <mcu/boot_debug.h>
-
 #include "../src/config.h"
 #include "boot_link_config.h"
 
@@ -114,7 +113,7 @@ link_transport_phy_t link_transport_open(const char * name, int baudrate){
     usb_attr.tx_fifo_word_size[5] = SOS_BOARD_TX5_FIFO_WORDS; //TX endpoint 5
 	fd = boot_link_transport_usb_open(name,
 			&m_usb_control,
-            &link_transport_usb_constants,
+			&link_transport_usb_constants,
 			&usb_attr,
 			mcu_pin(0xff,0xff),
 			1); //active high up pin

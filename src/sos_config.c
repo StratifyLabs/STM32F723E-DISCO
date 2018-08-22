@@ -58,7 +58,8 @@ const sos_board_config_t sos_board_config = {
     .socket_api = 0,
     .request = 0,
     .trace_dev = "/dev/trace",
-    .trace_event = SOS_BOARD_TRACE_EVENT
+    .trace_event = SOS_BOARD_TRACE_EVENT,
+    .git_hash = SOS_GIT_HASH
 };
 
 //This declares the task tables required by Stratify OS for applications and threads
