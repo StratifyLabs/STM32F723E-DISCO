@@ -1,13 +1,17 @@
 {
-    "bootsuffix": "_boot",
-    "description": "This BSP can be used to run Stratify OS on the STM32F723E-DISCO board.",
-    "github": "https://github.com/StratifyLabs/STM32F723E-DISCO",
-    "hardwareid": "0x00000013",
-    "name": "STM32F723E-DISCO",
-    "permissions": "public",
-    "publisher": "Stratify Labs, Inc",
-    "tags": "stm32,arm,cortex-m7",
-    "type": "os",
-    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-    "version": "0.2"
+   "description": "This BSP can be used to run Stratify OS on the STM32F723E-DISCO board.",
+   "github": "https://github.com/StratifyLabs/STM32F723E-DISCO",
+   "name": "STM32F723E-DISCO",
+   "permissions": "public",
+   "publisher": "Stratify Labs, Inc",
+   "tags": "stm32,arm,cortex-m7",
+   "type": "os",
+   "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
+   "version": "0.3",
+   "hardwaredId": "0x00000013",
+   "timestamp": 1545024988,
+   "documentId": "Oc5Pl1IvKoibbg4dlYe8",
+   "buildList": {
+      "7cw1aO3Vv01Krz3ALoxu": "0.2"
+   }
 }
