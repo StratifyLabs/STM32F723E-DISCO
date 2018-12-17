@@ -45,10 +45,15 @@ const bootloader_board_config_t boot_board_config = {
 };
 
 extern void boot_main();
+extern void SystemClock_Config();
 
 //Execute the Stratify OS default bootloader
 void _main(){ boot_main(); }
 
 void board_event_handler(int event, void * args){
-
+    switch(event){
+    case MCU_BOARD_CONFIG_EVENT_ROOT_INITIALIZE_CLOCK:
+        SystemClock_Config();
+        break;
+    }
 }
