@@ -8,10 +8,11 @@
    "type": "os",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
    "version": "0.3",
-   "hardwaredId": "0x00000013",
-   "timestamp": 1545024988,
+   "timestamp": 1545025060,
    "documentId": "Oc5Pl1IvKoibbg4dlYe8",
    "buildList": {
-      "7cw1aO3Vv01Krz3ALoxu": "0.2"
-   }
+      "7cw1aO3Vv01Krz3ALoxu": "0.2",
+      "YCs57QCn54exRxlhXs1D": "0.3"
+   },
+   "hardwareId": "0x00000013"
 }
