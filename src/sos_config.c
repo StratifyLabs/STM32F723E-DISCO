@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Copyright 2011-2018 Stratify Labs, Inc
 
@@ -222,7 +222,7 @@ const stm32_spi_dma_config_t spi2_dma_config = {
 /*fmc psram config*/
 const emc_config_t fmc_psram0_config = {
     .attr = {
-        .o_flags = EMC_FLAG_IS_PSRAM|EMC_FLAG_ENABLE,
+        .o_flags = EMC_FLAG_IS_PSRAM | EMC_FLAG_ENABLE | EMC_FLAG_IS_PSRAM_BANK1,
         .base_address = 0x60000000,
         .size = 0x100000,
         .freq = 0,
@@ -281,6 +281,55 @@ const emc_config_t fmc_psram0_config = {
         }
     }
 };
+/*fmc psram config*/
+const emc_config_t lcd0_config = {
+    .attr = {
+        .o_flags = EMC_FLAG_IS_AHB | EMC_FLAG_ENABLE | EMC_FLAG_IS_PSRAM_BANK2,
+        .base_address = 0x64000000,
+        .size = 0x100000,
+        .freq = 0,
+        .data_bus_width = 16,
+        .pin_assignment = {
+            .we = {SOS_BOARD_FMC_RAM_N_WE_PORT,SOS_BOARD_FMC_RAM_N_WE_PIN},
+            .oe = {SOS_BOARD_FMC_RAM_N_OE_PORT,SOS_BOARD_FMC_RAM_N_OE_PIN},
+            .bl = {{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF}},
+            .nadv = {0xFF,0xFF},
+            .nwait = {0xFF,0xFF},
+            .ncs = {{SOS_BOARD_FMC_LCD_N_CE_PORT,SOS_BOARD_FMC_LCD_N_CE_PIN},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF}},
+            .address = {{SOS_BOARD_LCD_RS_A0_PORT,SOS_BOARD_LCD_RS_A0_PIN},{0xFF,0xFF},
+                    {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                    {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                    {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                    {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                    {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                    {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+            },
+            .data = {
+                {SOS_BOARD_FMC_RAM_D0_PORT,SOS_BOARD_FMC_RAM_D0_PIN},
+              {SOS_BOARD_FMC_RAM_D1_PORT,SOS_BOARD_FMC_RAM_D1_PIN},
+              {SOS_BOARD_FMC_RAM_D2_PORT,SOS_BOARD_FMC_RAM_D2_PIN},
+              {SOS_BOARD_FMC_RAM_D3_PORT,SOS_BOARD_FMC_RAM_D3_PIN},
+              {SOS_BOARD_FMC_RAM_D4_PORT,SOS_BOARD_FMC_RAM_D4_PIN},
+              {SOS_BOARD_FMC_RAM_D5_PORT,SOS_BOARD_FMC_RAM_D5_PIN},
+              {SOS_BOARD_FMC_RAM_D6_PORT,SOS_BOARD_FMC_RAM_D6_PIN},
+              {SOS_BOARD_FMC_RAM_D7_PORT,SOS_BOARD_FMC_RAM_D7_PIN},
+              {SOS_BOARD_FMC_RAM_D8_PORT,SOS_BOARD_FMC_RAM_D8_PIN},
+              {SOS_BOARD_FMC_RAM_D9_PORT,SOS_BOARD_FMC_RAM_D9_PIN},
+              {SOS_BOARD_FMC_RAM_D10_PORT,SOS_BOARD_FMC_RAM_D10_PIN},
+              {SOS_BOARD_FMC_RAM_D11_PORT,SOS_BOARD_FMC_RAM_D11_PIN},
+              {SOS_BOARD_FMC_RAM_D12_PORT,SOS_BOARD_FMC_RAM_D12_PIN},
+              {SOS_BOARD_FMC_RAM_D13_PORT,SOS_BOARD_FMC_RAM_D13_PIN},
+              {SOS_BOARD_FMC_RAM_D14_PORT,SOS_BOARD_FMC_RAM_D14_PIN},
+              {SOS_BOARD_FMC_RAM_D15_PORT,SOS_BOARD_FMC_RAM_D15_PIN},
+                {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},
+                {0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF},{0xFF,0xFF}
+            },
+        }
+    }
+};
+
 //Coming Soon
 //SD Card as DMA
 //I2S2
@@ -332,6 +381,7 @@ const devfs_device_t devfs_list[] = {
     DEVFS_DEVICE("qspi0", mcu_qspi, 0, &qspi0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 //                device_name  periph_name    handle_port, handle_config,      handle_state, mode_value, uid_value,     device_type) {
     DEVFS_DEVICE("fmc_psram0", mcu_emc_psram, 0,           &fmc_psram0_config, 0,            0666,       SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("lcd0", mcu_emc_fmc_ahb, 0,                 &lcd0_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
 
 	DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM1
 	DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM2
