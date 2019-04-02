@@ -110,7 +110,7 @@ UARTFIFO_DECLARE_CONFIG_STATE(uart5_fifo, 1024,
 										0xff, 0xff,
 										0xff, 0xff);
 
-//I2C1
+//I2C1 audio wm8994 0011 0100
 I2C_DECLARE_CONFIG_MASTER(i2c0,
 								  I2C_FLAG_SET_MASTER,
 								  100000,
@@ -330,6 +330,35 @@ const emc_config_t lcd0_config = {
     }
 };
 
+SAI_DMA_DECLARE_CONFIG(sai2 ,
+                   I2S_FLAG_SET_MASTER|I2S_FLAG_IS_TRANSMITTER|SAI_FLAG_IS_OUTPUTDRIVE_DISABLE|\
+                       SAI_FLAG_IS_FIFOTHRESHOLD_1QF|SAI_FLAG_ENABLE|SAI_DMA_ENABLE,
+                   16000,
+                   1,0x0f,  //mclk mult, slot
+                   SOS_BOARD_SAI2_SCK_A_PORT, SOS_BOARD_SAI2_SCK_A_PIN,
+                   SOS_BOARD_SAI2_SD_A_PORT, SOS_BOARD_SAI2_SD_A_PIN,
+                   SOS_BOARD_SAI2_MCLK_A_PORT , SOS_BOARD_SAI2_MCLK_A_PIN,
+                   SOS_BOARD_SAI2_FS_A_PORT, SOS_BOARD_SAI2_FS_A_PIN,
+                   1,4,
+                   3,STM32_DMA_PRIORITY_HIGH,
+                   STM32_DMA_FLAG_IS_FIFO_THRESHOLD_FULL|STM32_DMA_FLAG_IS_FIFO|\
+                   STM32_DMA_FLAG_IS_MEMORY_HALFWORD|STM32_DMA_FLAG_IS_PERIPH_HALFWORD|
+                   STM32_DMA_FLAG_IS_CIRCULAR|STM32_DMA_FLAG_IS_MEMORY_TO_PERIPH) ;
+SAI_DMA_DECLARE_CONFIG(sai3 ,
+                   I2S_FLAG_SET_SLAVE|I2S_FLAG_IS_RECEIVER|SAI_FLAG_IS_OUTPUTDRIVE_DISABLE|\
+                       SAI_FLAG_IS_FIFOTHRESHOLD_1QF|SAI_FLAG_ENABLE|SAI_DMA_ENABLE,
+                   16000,
+                   1,0x0f,//mclk mult, slot
+                   0xff, 0xff,
+                   SOS_BOARD_SAI2_SD_B_PORT, SOS_BOARD_SAI2_SD_B_PIN,
+                   0xff, 0xff,
+                   0xff, 0xff,
+                   1,6,
+                   3,STM32_DMA_PRIORITY_HIGH,
+                   STM32_DMA_FLAG_IS_FIFO_THRESHOLD_FULL|\
+                   STM32_DMA_FLAG_IS_MEMORY_HALFWORD|STM32_DMA_FLAG_IS_PERIPH_HALFWORD|
+                   STM32_DMA_FLAG_IS_CIRCULAR|STM32_DMA_FLAG_IS_PERIPH_TO_MEMORY) ;
+
 //Coming Soon
 //SD Card as DMA
 //I2S2
@@ -360,7 +389,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
-	DEVFS_DEVICE("i2c0", mcu_i2c, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("i2c0", mcu_i2c, 0, &i2c0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("i2c3", mcu_i2c, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
@@ -373,6 +402,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("pio5", mcu_pio, 5, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOF
 	DEVFS_DEVICE("pio6", mcu_pio, 6, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOG
 	DEVFS_DEVICE("pio7", mcu_pio, 7, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOH
+    DEVFS_DEVICE("pio8", mcu_pio, 8, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOI
 
 	DEVFS_DEVICE("spi0", mcu_spi, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("spi1", mcu_spi, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
@@ -382,7 +412,8 @@ const devfs_device_t devfs_list[] = {
 //                device_name  periph_name    handle_port, handle_config,      handle_state, mode_value, uid_value,     device_type) {
     DEVFS_DEVICE("fmc_psram0", mcu_emc_psram, 0,           &fmc_psram0_config, 0,            0666,       SOS_USER_ROOT, S_IFCHR),
     DEVFS_DEVICE("lcd0", mcu_emc_fmc_ahb, 0,                 &lcd0_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
-
+    DEVFS_DEVICE("sai2", mcu_sai_dma, 2,                 &sai2_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("sai3", mcu_sai_dma, 3,                 &sai3_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM1
 	DEVFS_DEVICE("tmr1", mcu_tmr, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM2
 	DEVFS_DEVICE("tmr2", mcu_tmr, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
