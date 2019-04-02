@@ -6,12 +6,14 @@
 #ifndef SL_CONFIG_H_
 #define SL_CONFIG_H_
 
-#define SL_CONFIG_VERSION_STRING "0.0"
-#define SL_CONFIG_VERSION_BCD 0x00
-#define SL_CONFIG_DOCUMENT_ID "unpublished"
-#define SL_CONFIG_NAME "unnamed"
-#define SL_CONFIG_TYPE "unknown"
-#define SL_CONFIG_HARDWARE_ID_STRING "0x00000000"
+#define SL_CONFIG_VERSION_STRING "0.3"
+#define SL_CONFIG_VERSION_BCD 0x03
+#define SL_CONFIG_DOCUMENT_ID "Oc5Pl1IvKoibbg4dlYe8"
+#define SL_CONFIG_NAME "STM32F723E-DISCO"
+#define SL_CONFIG_TYPE "os"
+#define SL_CONFIG_PUBLISHER "Stratify Labs, Inc"
+#define SL_CONFIG_PERMISSIONS "public"
+#define SL_CONFIG_HARDWARE_ID_STRING "0x00000016"
 
 #endif
 
