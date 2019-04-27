@@ -123,6 +123,13 @@ I2C_DECLARE_CONFIG_MASTER(i2c1,
 								  100000,
 								  SOS_BOARD_I2C2_SDA_PORT, SOS_BOARD_I2C2_SDA_PIN, //SDA
 								  SOS_BOARD_I2C2_SCL_PORT, SOS_BOARD_I2C2_SCL_PIN); //SCL
+//i2c3 for lcd touch
+I2C_DECLARE_CONFIG_MASTER(i2c2,
+                                  I2C_FLAG_SET_MASTER,
+                                  100000,
+                                  SOS_BOARD_LCD_TOUCH_I2C3_SDA_PORT, SOS_BOARD_LCD_TOUCH_I2C3_SDA_PIN, //SDA
+                                  SOS_BOARD_LCD_TOUCH_I2C3_SCL_PORT, SOS_BOARD_LCD_TOUCH_I2C3_SDA_PIN); //SCL
+
 //qspi
 #define QPI_READ_4_BYTE_ADDR_CMD             0xEC
 #define QUAD_OUT_FAST_READ_CMD               0x6B
@@ -389,9 +396,9 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
-    DEVFS_DEVICE("i2c0", mcu_i2c, 0, &i2c0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c1", mcu_i2c, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("i2c2", mcu_i2c, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("i2c0", mcu_i2c, 0, &i2c0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),    //WM8994ECS wolfson audio
+    DEVFS_DEVICE("i2c1", mcu_i2c, 1, &i2c1_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+    DEVFS_DEVICE("i2c2", mcu_i2c, 2, &i2c2_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),    // touch screen
 	DEVFS_DEVICE("i2c3", mcu_i2c, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 	DEVFS_DEVICE("pio0", mcu_pio, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //GPIOA
