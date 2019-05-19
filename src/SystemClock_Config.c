@@ -5,17 +5,17 @@
 
 void SystemClock_Config(){
 
-    RCC_OscInitTypeDef RCC_OscInitStruct;
+	RCC_OscInitTypeDef RCC_OscInitStruct;
 	RCC_ClkInitTypeDef RCC_ClkInitStruct;
 	RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
-    HAL_RCCEx_GetPeriphCLKConfig(&PeriphClkInitStruct);
-	/**Configure the main internal regulator output voltage 
+	HAL_RCCEx_GetPeriphCLKConfig(&PeriphClkInitStruct);
+	/**Configure the main internal regulator output voltage
 		 */
 	__HAL_RCC_PWR_CLK_ENABLE();
 	
 	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 	
-	/**Initializes the CPU, AHB and APB busses clocks 
+	/**Initializes the CPU, AHB and APB busses clocks
 		 */
 	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
 	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -27,11 +27,11 @@ void SystemClock_Config(){
 	RCC_OscInitStruct.PLL.PLLQ = 9;
 	HAL_RCC_OscConfig(&RCC_OscInitStruct);
 	
-	/**Activate the Over-Drive mode 
+	/**Activate the Over-Drive mode
 		 */
 	HAL_PWREx_EnableOverDrive();
 	
-	/**Initializes the CPU, AHB and APB busses clocks 
+	/**Initializes the CPU, AHB and APB busses clocks
 		 */
 	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
 			|RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
@@ -42,13 +42,13 @@ void SystemClock_Config(){
 	
 	HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7);
 	
-    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART6|RCC_PERIPHCLK_CLK48|RCC_PERIPHCLK_SAI2;
+	PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART6|RCC_PERIPHCLK_CLK48|RCC_PERIPHCLK_SAI2;
 	PeriphClkInitStruct.Usart6ClockSelection = RCC_USART6CLKSOURCE_PCLK2;
 	PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLL;
-    PeriphClkInitStruct.Sai2ClockSelection = RCC_SAI2CLKSOURCE_PLLI2S;
-    PeriphClkInitStruct.PLLI2S.PLLI2SN = 344;
-    PeriphClkInitStruct.PLLI2S.PLLI2SQ = 7;
-    PeriphClkInitStruct.PLLI2SDivQ = 1;
+	PeriphClkInitStruct.Sai2ClockSelection = RCC_SAI2CLKSOURCE_PLLI2S;
+	PeriphClkInitStruct.PLLI2S.PLLI2SN = 344;
+	PeriphClkInitStruct.PLLI2S.PLLI2SQ = 7;
+	PeriphClkInitStruct.PLLI2SDivQ = 1;
 
 	HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
 }

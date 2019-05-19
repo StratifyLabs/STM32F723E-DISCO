@@ -7,12 +7,13 @@
    "tags": "stm32,arm,cortex-m7",
    "type": "os",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "0.3",
-   "timestamp": 1545025060,
+   "version": "0.4",
+   "timestamp": 1558230053,
    "documentId": "Oc5Pl1IvKoibbg4dlYe8",
    "buildList": {
       "7cw1aO3Vv01Krz3ALoxu": "0.2",
-      "YCs57QCn54exRxlhXs1D": "0.3"
+      "YCs57QCn54exRxlhXs1D": "0.3",
+      "ALepe2AWszz3EFvltOni": "0.4"
    },
    "hardwareId": "0x00000016"
 }
