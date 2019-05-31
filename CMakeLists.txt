@@ -28,7 +28,7 @@ set(SOS_ARCH v7em_f5sh)
 set(SOS_DEVICE stm32f723ie)
 set(SOS_DEVICE_FAMILY stm32f723xx)
 set(SOS_HARDWARD_ID 0x00000016)
-set(SOS_LIBRARIES son_kernel)
+set(SOS_LIBRARIES son_kernel sgfx_kernel_4bpp)
 set(SOS_INCLUDE_DIRECTORIES ${TOOLCHAIN_INC_DIR}/mcu/arch/stm32/cmsis)
 
 set(SOS_KERNEL_START_ADDRESS 0x08040000)

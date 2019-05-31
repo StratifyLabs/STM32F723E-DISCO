@@ -24,6 +24,11 @@ limitations under the License.
 #include <sos/link/types.h>
 #include "board_config.h"
 
+#include "stm32f723e_discovery_psram.h"
+#include "stm32f723e_discovery_lcd.h"
+#include "st7789h2.h"
+#include "display_device.h"
+
 #define TRACE_COUNT 8
 #define TRACE_FRAME_SIZE sizeof(link_trace_event_t)
 #define TRACE_BUFFER_SIZE (sizeof(link_trace_event_t)*TRACE_COUNT)
@@ -72,6 +77,10 @@ void board_event_handler(int event, void * args){
 
 		case MCU_BOARD_CONFIG_EVENT_ROOT_INITIALIZE_CLOCK:
 			SystemClock_Config();
+
+			//this will memory map the PSRAM
+			BSP_PSRAM_Init();
+			//display_device_init(0,0);
 			break;
 
 		case MCU_BOARD_CONFIG_EVENT_START_INIT:

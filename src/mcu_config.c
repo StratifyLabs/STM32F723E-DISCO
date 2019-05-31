@@ -60,5 +60,5 @@ const mcu_board_config_t mcu_board_config = {
 	.event_handler = SOS_BOARD_EVENT_HANDLER,
 	.led = {DISCO_LED_PORT, DISCO_LED_PIN},
 	.arch_config = &stm32_config,
-	.o_mcu_debug = MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_USER0 | MCU_DEBUG_USER1
+	.o_mcu_debug = MCU_DEBUG_INFO | MCU_DEBUG_SYS | MCU_DEBUG_USER0 | MCU_DEBUG_USER1 | MCU_DEBUG_APPFS
 };

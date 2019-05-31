@@ -34,11 +34,14 @@ limitations under the License.
 #include <sos/fs/appfs.h>
 #include <sos/fs/devfs.h>
 #include <sos/fs/sffs.h>
+#include <mcu/appfs.h>
 #include <sos/sos.h>
 
 #include "config.h"
 #include "sl_config.h"
 #include "link_config.h"
+#include "stm32f723e_discovery_psram.h"
+#include "display_device.h"
 
 #if !defined SOS_BOARD_FLAGS
 #define SOS_BOARD_FLAGS 0
@@ -392,6 +395,8 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
+	DEVFS_DEVICE("display0", display_device, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+
 	//MCU peripherals
 	DEVFS_DEVICE("core", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("core0", mcu_core, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
@@ -453,7 +458,34 @@ const devfs_device_t devfs_list[] = {
  *
  */
 
-const devfs_device_t mem0 = DEVFS_DEVICE("mem0", mcu_mem, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFBLK);
+#define TCM_RAM_PAGE_COUNT 32 //the other 32 pages are used for sys_mem
+#define INTERNAL_RAM_PAGE_COUNT 176
+#define EXTERNAL_RAM_PAGE_COUNT (PSRAM_DEVICE_SIZE/MCU_RAM_PAGE_SIZE)
+#define APPFS_RAM_PAGES (TCM_RAM_PAGE_COUNT + INTERNAL_RAM_PAGE_COUNT + EXTERNAL_RAM_PAGE_COUNT)
+
+u32 ram_usage_table[APPFS_RAM_USAGE_WORDS(APPFS_RAM_PAGES)] MCU_SYS_MEM;
+const devfs_device_t flash0 = DEVFS_DEVICE("flash0", mcu_flash, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFBLK);
+
+
+const appfs_mem_config_t appfs_mem_config = {
+	.usage_size = sizeof(ram_usage_table),
+	.usage = ram_usage_table,
+	.system_ram_page = (u32)0, //system RAM is not located in the APPFS memory sections
+	.flash_driver = &flash0,
+	.section_count = 6,
+	.sections = {
+		{ .o_flags = MEM_FLAG_IS_FLASH, .page_count = 4, .page_size = 16*1024, .address = 0x08000000 },
+		{ .o_flags = MEM_FLAG_IS_FLASH, .page_count = 1, .page_size = 64*1024, .address = 0x08000000 + 16*1024*4 },
+		{ .o_flags = MEM_FLAG_IS_FLASH, .page_count = 3, .page_size = 128*1024, .address = 0x08000000 + 16*1024*4 + 64*1024*1 },
+		{ .o_flags = MEM_FLAG_IS_RAM, .page_count = INTERNAL_RAM_PAGE_COUNT, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x20010000 },
+		{ .o_flags = MEM_FLAG_IS_RAM | MEM_FLAG_IS_TIGHTLY_COUPLED, .page_count = TCM_RAM_PAGE_COUNT, .page_size = MCU_RAM_PAGE_SIZE, .address = 0x20008000 },
+		{ .o_flags = MEM_FLAG_IS_RAM | MEM_FLAG_IS_EXTERNAL, .page_count = EXTERNAL_RAM_PAGE_COUNT, .page_size = MCU_RAM_PAGE_SIZE, .address = PSRAM_DEVICE_ADDR }
+	}
+};
+
+const devfs_device_t mem0 = DEVFS_DEVICE("mem0", appfs_mem, 0, &appfs_mem_config, 0, 0666, SOS_USER_ROOT, S_IFBLK);
+
+
 const sysfs_t sysfs_list[] = {
 	APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 	DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
