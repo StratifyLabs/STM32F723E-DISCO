@@ -366,7 +366,7 @@ const stm32_qspi_dma_config_t qspi_dma_config = {
 	.qspi_config = {
 		.attr = {
 			.o_flags = QSPI_FLAG_SET_MASTER,
-			.freq = 10000000UL,
+			.freq = 20000000UL,
 			.pin_assignment = {
 				.data[0] = {SOS_BOARD_QSPI_IO0_PORT,SOS_BOARD_QSPI_IO0_PIN},
 				.data[1] = {SOS_BOARD_QSPI_IO1_PORT,SOS_BOARD_QSPI_IO1_PIN},
@@ -558,10 +558,19 @@ const appfs_mem_config_t appfs_mem_config = {
 
 const devfs_device_t mem0 = DEVFS_DEVICE("mem0", appfs_mem, 0, &appfs_mem_config, 0, 0666, SOS_USER_ROOT, S_IFBLK);
 
+sffs_state_t sffs_state;
+const sffs_config_t sffs_configuration = {
+	.drive = {
+		.devfs = &(sysfs_list[1]),
+		.name = "drive0",
+		.state = (sysfs_shared_state_t*)&sffs_state
+	}
+};
 
 const sysfs_t sysfs_list[] = {
 	APPFS_MOUNT("/app", &mem0, SYSFS_ALL_ACCESS), //the folder for ram/flash applications
 	DEVFS_MOUNT("/dev", devfs_list, SYSFS_READONLY_ACCESS), //the list of devices
+	//SFFS_MOUNT("/home", &sffs_configuration, SYSFS_ALL_ACCESS), //the stratify file system on external flash
 	SYSFS_MOUNT("/", sysfs_list, SYSFS_READONLY_ACCESS), //the root filesystem (must be last)
 	SYSFS_TERMINATOR
 };
