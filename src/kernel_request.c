@@ -18,11 +18,9 @@ limitations under the License.
 
 #include <sapi/sys/requests.h>
 #include <sapi/sg.h>
+#include <jansson/jansson_api.h>
 
 #include "config.h"
-
-#include <arm_dsp_api_declaration.h>
-
 
 int kernel_request(int req, void * arg){
 	return -1;
@@ -30,7 +28,8 @@ int kernel_request(int req, void * arg){
 
 const void * kernel_request_api(u32 request){
 	switch(request){
-		case SGFX_API_REQUEST: return &sg_api;
+		//case SGFX_API_REQUEST: return &sg_api;
+		//case JANSSON_API_REQUEST: return &jansson_api;
 	}
 	return 0;
 }

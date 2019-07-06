@@ -36,6 +36,7 @@ limitations under the License.
 #include <sos/fs/sffs.h>
 #include <mcu/appfs.h>
 #include <sos/sos.h>
+#include <device/drive_cfi.h>
 
 #include "config.h"
 #include "sl_config.h"
@@ -139,20 +140,6 @@ I2C_DECLARE_CONFIG_MASTER(i2c2,
 #define QPI_PAGE_PROG_4_BYTE_ADDR_CMD        0x12
 #define QSPI_DUMMY_CYCLES_READ_QUAD_IO       10
 
-QSPI_DECLARE_CONFIG(qspi0,
-						  QSPI_FLAG_SET_MASTER,
-						  1,
-						  26,
-						  QPI_READ_4_BYTE_ADDR_CMD,
-						  QUAD_OUT_FAST_READ_CMD,
-						  QPI_PAGE_PROG_4_BYTE_ADDR_CMD,
-						  QSPI_DUMMY_CYCLES_READ_QUAD_IO,
-						  SOS_BOARD_QSPI_IO0_PORT, SOS_BOARD_QSPI_IO0_PIN,
-						  SOS_BOARD_QSPI_IO1_PORT, SOS_BOARD_QSPI_IO1_PIN,
-						  SOS_BOARD_QSPI_IO2_PORT, SOS_BOARD_QSPI_IO2_PIN,
-						  SOS_BOARD_QSPI_IO3_PORT, SOS_BOARD_QSPI_IO3_PIN,
-						  SOS_BOARD_QSPI_CLK_PORT, SOS_BOARD_QSPI_CLK_PIN,
-						  SOS_BOARD_QSPI_NCS_PORT, SOS_BOARD_QSPI_NCS_PIN);
 
 
 #define SPI_DMA_FLAGS STM32_DMA_FLAG_IS_NORMAL | \
@@ -375,6 +362,90 @@ SAI_DMA_DECLARE_CONFIG(sai3 ,
 //I2S3
 //SAI1A/B
 
+const stm32_qspi_dma_config_t qspi_dma_config = {
+	.qspi_config = {
+		.attr = {
+			.o_flags = QSPI_FLAG_SET_MASTER,
+			.freq = 10000000UL,
+			.pin_assignment = {
+				.data[0] = {SOS_BOARD_QSPI_IO0_PORT,SOS_BOARD_QSPI_IO0_PIN},
+				.data[1] = {SOS_BOARD_QSPI_IO1_PORT,SOS_BOARD_QSPI_IO1_PIN},
+				.data[2] = {SOS_BOARD_QSPI_IO2_PORT,SOS_BOARD_QSPI_IO2_PIN},
+				.data[3] = {SOS_BOARD_QSPI_IO3_PORT,SOS_BOARD_QSPI_IO3_PIN},
+				.sck = {SOS_BOARD_QSPI_CLK_PORT,SOS_BOARD_QSPI_CLK_PIN},
+				.cs = {SOS_BOARD_QSPI_NCS_PORT,SOS_BOARD_QSPI_NCS_PIN}
+			}
+		}
+	},
+	.dma_config = {
+		.tx = {
+			.dma_number = STM32_DMA2,
+			.stream_number = 7,
+			.channel_number = 3,
+			.priority = STM32_DMA_PRIORITY_LOW,
+			.o_flags = STM32_DMA_FLAG_IS_NORMAL |
+			//STM32_DMA_FLAG_IS_FIFO |
+			STM32_DMA_FLAG_IS_MEMORY_TO_PERIPH |
+			STM32_DMA_FLAG_IS_MEMORY_BYTE |
+			STM32_DMA_FLAG_IS_PERIPH_BYTE
+		},
+		.rx = {
+			.dma_number = STM32_DMA2,
+			.stream_number = 7,
+			.channel_number = 3,
+			.priority = STM32_DMA_PRIORITY_LOW,
+			.o_flags = STM32_DMA_FLAG_IS_NORMAL |
+			//STM32_DMA_FLAG_IS_FIFO |
+			STM32_DMA_FLAG_IS_PERIPH_TO_MEMORY |
+			STM32_DMA_FLAG_IS_MEMORY_BYTE |
+			STM32_DMA_FLAG_IS_PERIPH_BYTE
+		}
+	}
+};
+
+const devfs_device_t qspi_drive_device = DEVFS_DEVICE("qspi", mcu_qspi, 0, &qspi_dma_config, 0, 0666, SOS_USER_ROOT, S_IFCHR);
+
+const drive_cfi_config_t drive_cfi_config = {
+	.serial_device = &qspi_drive_device,
+	.info = {
+		.address_size = 1,
+		.write_block_size = 1, //smallest available write size
+		.num_write_blocks = 64*1024*1024UL,  //64MB
+		.erase_block_size = 4096, //smallest eraseable block
+		.erase_block_time = 30000UL, //45ms typical
+		.erase_device_time = 140000000UL, //140s typical
+		.bitrate = 66000000UL
+	},
+	.opcode = {
+		.write_enable = 0x06,
+		.page_program = 0x02,
+		.block_erase = 0x20,
+		.device_erase = 0xC7,
+		.fast_read = 0xEB,
+		.power_up = 0xAB,
+		.power_down = 0xB9,
+		.enable_reset = 0x66,
+		.reset = 0x99,
+		.protect = 0x7E,
+		.unprotect = 0x7A,
+		.read_busy_status = 0x05, //busy bit is bit 0 of status register 1
+		.busy_status_mask = 0x01,
+		.enter_qpi_mode = 0x35,
+		.enter_4byte_address_mode = 0xb7,
+		.page_program_size = 256,
+		.read_dummy_cycles = 6,
+		.write_dummy_cycles = 0
+	},
+	.cs = { 0xff, 0xff },
+	.qspi_flags =
+	QSPI_FLAG_IS_OPCODE_QUAD |
+	QSPI_FLAG_IS_DATA_QUAD |
+	QSPI_FLAG_IS_ADDRESS_QUAD |
+	QSPI_FLAG_IS_ADDRESS_32_BITS
+};
+
+drive_cfi_state_t drive_cfi_state MCU_SYS_MEM;
+
 
 FIFO_DECLARE_CONFIG_STATE(stdio_in, SOS_BOARD_STDIO_BUFFER_SIZE);
 FIFO_DECLARE_CONFIG_STATE(stdio_out, SOS_BOARD_STDIO_BUFFER_SIZE);
@@ -395,6 +466,7 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("sys", sys, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//DEVFS_DEVICE("rtc", mcu_rtc, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
+	DEVFS_DEVICE("drive0", drive_cfi_qspi, 0, &drive_cfi_config, &drive_cfi_state, 0666, SOS_USER_ROOT, S_IFBLK),
 	DEVFS_DEVICE("display0", display_device, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 
 	//MCU peripherals
@@ -420,10 +492,10 @@ const devfs_device_t devfs_list[] = {
 	DEVFS_DEVICE("spi1", mcu_spi, 1, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("spi2", mcu_spi, 2, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("spi3", mcu_spi, 3, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("qspi0", mcu_qspi, 0, &qspi0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("qspi0", mcu_qspi, 0, &qspi0_config, 0, 0666, SOS_USER_ROOT, S_IFCHR),
 	//                device_name  periph_name    handle_port, handle_config,      handle_state, mode_value, uid_value,     device_type) {
-	DEVFS_DEVICE("fmc_psram0", mcu_emc_psram, 0,           &fmc_psram0_config, 0,            0666,       SOS_USER_ROOT, S_IFCHR),
-	DEVFS_DEVICE("lcd0", mcu_emc_fmc_ahb, 0,                 &lcd0_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("fmc_psram0", mcu_emc_psram, 0,           &fmc_psram0_config, 0,            0666,       SOS_USER_ROOT, S_IFCHR),
+	//DEVFS_DEVICE("lcd0", mcu_emc_fmc_ahb, 0,                 &lcd0_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("i2s2", mcu_sai_dma, 2,                 &sai2_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("i2s3", mcu_sai_dma, 3,                 &sai3_config      , 0,            0666,       SOS_USER_ROOT, S_IFCHR),
 	DEVFS_DEVICE("tmr0", mcu_tmr, 0, 0, 0, 0666, SOS_USER_ROOT, S_IFCHR), //TIM1
@@ -446,6 +518,7 @@ const devfs_device_t devfs_list[] = {
 
 
 //--------------------------------------------Root Filesystem---------------------------------------------------
+
 
 /*
  * This is the root filesystem that determines what is mounted at /.

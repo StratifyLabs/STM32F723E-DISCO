@@ -28,9 +28,6 @@ limitations under the License.
 
 #define SOS_BOARD_SYSTEM_CLOCK 216000000
 #define SOS_BOARD_SYSTEM_MEMORY_SIZE (8192*3)
-#define SOS_BOARD_ID "-LABUlXF_3U2nEosAKsD"
-#define SOS_BOARD_VERSION "0.12"
-#define SOS_BOARD_NAME "STM32F723E-DISCO"
 
 #define SOS_BOARD_USB_RX_BUFFER_SIZE 512
 #define SOS_BOARD_STDIO_BUFFER_SIZE 512
@@ -95,9 +92,11 @@ limitations under the License.
 
 #define SYMBOLS_IGNORE_DCOMPLEX 1
 #define SYMBOLS_IGNORE_POSIX_TRACE 1 //Always ignore -- deprecated
-#define SYMBOLS_IGNORE_SG 1 //Stratify Graphics -- ignore if board will not support displays
 #define SYMBOLS_IGNORE_SOCKET 1
 #define SYMBOLS_IGNORE_LWIP 1
+
+#define SYMBOLS_IGNORE_WCTYPE 1
+#define SYMBOLS_IGNORE_WCHAR 1
 
 //other ignore switches
 #if 0
@@ -113,19 +112,6 @@ limitations under the License.
 #define SYMBOLS_IGNORE_SEM 1
 #define SYMBOLS_IGNORE_MQ 1
 #endif
-
-/* Uncomment to add ARM CMSIS DSP libraries to the BSP
- * 
- * See [ARM CMSIS Declaration](https://github.com/StratifyLabs/StratifyOS-CMSIS/blob/master/arm_dsp_api_declaration.h)
- * for more detailed link configuration switches.
- * 
- * 
- */
-#define SOS_BOARD_ARM_DSP_API_Q7 0
-#define SOS_BOARD_ARM_DSP_API_Q15 0
-#define SOS_BOARD_ARM_DSP_API_Q31 0
-#define SOS_BOARD_ARM_DSP_API_F32 0
-#define SOS_BOARD_ARM_DSP_CONVERSION_API 0
 
 //--------------------------------------------Hardware Pins-------------------------------------------------
 
