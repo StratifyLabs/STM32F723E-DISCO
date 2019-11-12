@@ -12,10 +12,14 @@ set(SOURCES
   ${SOURCES_PREFIX}/board_symbols.c
   ${SOURCES_PREFIX}/SystemClock_Config.c
   ${SOURCES_PREFIX}/kernel_request.c
+	${SOURCES_PREFIX}/ft6x06.h
+	${SOURCES_PREFIX}/ft6x06.c
 	${SOURCES_PREFIX}/st7789h2.h
 	${SOURCES_PREFIX}/st7789h2.c
 	${SOURCES_PREFIX}/display_device.c
 	${SOURCES_PREFIX}/display_device.h
+	${SOURCES_PREFIX}/touch_device.c
+	${SOURCES_PREFIX}/touch_device.h
 	${SOURCES_PREFIX}/stm32f723e_discovery.c
 	${SOURCES_PREFIX}/stm32f723e_discovery.h
 	${SOURCES_PREFIX}/stm32f723e_discovery_lcd.c

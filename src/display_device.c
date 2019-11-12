@@ -185,7 +185,7 @@ int display_device_init(const devfs_handle_t * handle, void * ctl){
 	if( m_is_initialized == 0 ){
 		//FMC Bank 2 needs to be non-cacheable because it is used to write the display driver chip
 #if 1
-		mpu_enable_region(TASK_APPLICATION_DATA_USER_REGION_LOW_PRIORITY,
+		mpu_enable_region(TASK_APPLICATION_DATA_USER_REGION,
 								(void*)(0x60000000 + 0x04000000), //bank 1 sub bank 2
 								0x04000000,
 								MPU_ACCESS_PRW,
